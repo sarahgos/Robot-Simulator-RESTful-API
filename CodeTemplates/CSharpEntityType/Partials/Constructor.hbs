@@ -1,0 +1,14 @@
+﻿{{#if lines}}
+        public {{class}}()
+        {
+        }
+
+        public {{class}}({{#each properties}}{{property-type}} {{lower-case-property-name}}{{#if @last}} {{else}}, {{/if}}{{/each}})
+        {
+{{#each properties}}
+            {{property-name}} = {{lower-case-property-name}};
+{{/each}}
+        }
+
+{{/if}}
+

@@ -1,0 +1,604 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>robot-controller-api</name>
+    </assembly>
+    <members>
+        <member name="M:robot_controller_api.Controllers.MapsController.#ctor(robot_controller_api.Persistence.IMapDataAccess)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:robot_controller_api.Controllers.MapsController.GetAllMaps">
+            <summary>
+            Gets all maps from the database.
+            </summary>
+            <returns>List of maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Controllers.MapsController.GetSquareMapsOnly">
+            <summary>
+            Gets all square maps from the database.
+            </summary>
+            <returns>List of square maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Controllers.MapsController.GetMapById(System.Int32)">
+            <summary>
+            Gets map by given Id number.
+            </summary>
+            <param name="id">The Id of the map to return.</param>
+            <returns>HTTP ok response with map object details.</returns>
+            <response code="200">Returns the map with matching id.</response>    
+            <response code="404">If map with id isn't found.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.MapsController.AddMap(robot_controller_api.Models.Map)">
+            <summary>
+            Add a new map to database.
+            </summary>
+            <param name="newMap">New map object from HTTP request.</param>
+            <returns>CreatedAtRoute(map object)</returns>
+            <remarks>
+            Sample request:
+                POST /api/robot-commands
+                {
+                    "name": "Crater1",
+                    "columns": 10,
+                    "rows": 12
+                }
+            </remarks>
+            <response code="400">If the map request is null.</response>
+            <response code="409">If a map already exists with the same name.</response>
+            <response code="201">Returns the newly created map.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.MapsController.UpdateMap(robot_controller_api.Models.Map)">
+            <summary>
+            Modify an existing map in the database.
+            </summary>
+            <param name="updatedMap">Map object with updated properties.</param>
+            <returns>No content</returns>
+            <remarks>
+            Sample request:
+                PUT /api/maps
+                {
+                    "Id": 16,
+                    "Name": "Map6",
+                    "Description": "80 x 90 map",
+                    "Columns":80,
+                    "Rows":90
+                }    
+            </remarks>
+            <response code="400">If the map request is null.</response>
+            <response code="404">If a map with the given id isn't found.</response>
+            <response code="409">If there is already a map with that name.</response>
+            <response code="204">If successful, return no content.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.MapsController.DeleteMap(System.Int32)">
+            <summary>
+            Delete a map from the database.
+            </summary>
+            <param name="id">Id of map to delete.</param>
+            <returns>no content or not found</returns>
+            <response code="404">If a map with given id isn't found.</response>
+            <response code="204">If deletion is successful.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.MapsController.CheckCoordinate(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Checks if a given coordinate is on a map.
+            </summary>
+            <param name="id">Id of map to check.</param>
+            <param name="x">Column of map.</param>
+            <param name="y">Row of map.</param>
+            <returns>True is on map/false if not.</returns>
+            <response code="400">If coordinates less than 0.</response>
+            <response code="404">If id of map not found.</response>
+            <response code="200">Returns true/false.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.RobotCommandsController.#ctor(robot_controller_api.Persistence.IRobotCommandDataAccess)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:robot_controller_api.Controllers.RobotCommandsController.GetAllRobotCommands">
+            <summary>
+            Gets all robot commands.
+            </summary>
+            <returns>List of robot commands.</returns>
+        </member>
+        <member name="M:robot_controller_api.Controllers.RobotCommandsController.GetMoveCommandsOnly">
+            <summary>
+            Gets only move robot commands.
+            </summary>
+            <returns>List of move commands.</returns>
+        </member>
+        <member name="M:robot_controller_api.Controllers.RobotCommandsController.GetRobotCommandById(System.Int32)">
+            <summary>
+            Gets robot command by given Id number.
+            </summary>
+            <param name="id">The Id of the robot command to return.</param>
+            <returns>HTTP ok response with robot command object details.</returns>
+            <response code="200">Returns the robot command with matching id.</response>    
+            <response code="404">If robot command with id isn't found.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.RobotCommandsController.AddRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Adds a robot command to the database.
+            </summary>
+            <param name="newCommand">RobotCommand object.</param>
+            <returns>CreatedAtRouteObject</returns>
+            <remarks>
+            Sample request:
+                POST /api/robot-commands
+                {
+                    "name": "DANCE",
+                    "description": "Make robot dance",
+                    "isMoveCommand": true
+                }
+            </remarks>
+            <response code="400">If the robot command request is null.</response>
+            <response code="409">If a robot command already exists with the same name.</response>
+            <response code="201">Returns the newly created robot command.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.RobotCommandsController.UpdateRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Updates an existing command in the database.
+            </summary>
+            <param name="id">Id of command to update.</param>
+            <param name="updatedCommand">RobotCommand object with updated parameters.</param>
+            <returns>No content</returns>
+            <remarks>
+            Sample request:
+                PUT /api/robot-commands
+                {
+                    "Id": 20,
+                    "Name": "JUMP",
+                    "Description": "Makes robot jump",
+                    "isMoveCommand": true
+                }    
+            </remarks>
+            <response code="400">If the robot command request is null.</response>
+            <response code="404">If a robot command with the given id isn't found.</response>
+            <response code="409">If there is already a robot command with that name.</response>
+            <response code="204">If successful, return no content.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.RobotCommandsController.DeleteRobotCommand(System.Int32)">
+            <summary>
+            Deletes a robot command from the database.
+            </summary>
+            <param name="id">Id of command to delete.</param>
+            <returns>NoContent()</returns>
+            <response code="404">No robot command matches given id.</response>
+            <response code="204">Success.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.#ctor(robot_controller_api.Persistence.IUserDataAccess)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.GetAllUsers">
+            <summary>
+            Gets all users from the database.
+            </summary>
+            <returns>List of users</returns>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.GetAdminUsersOnly">
+            <summary>
+            Gets all admin users from the database.
+            </summary>
+            <returns>List of admin users</returns>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.GetUserById(System.Int32)">
+            <summary>
+            Gets user by given Id number.
+            </summary>
+            <param name="id">The Id of the user to return.</param>
+            <returns>HTTP ok response with user object details.</returns>
+            <response code="200">Returns the user with matching id.</response>    
+            <response code="404">If user with id isn't found.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.AddUser(robot_controller_api.Models.User)">
+            <summary>
+            Add a new user to database.
+            </summary>
+            <param name="newUser">New user object from HTTP request.</param>
+            <returns>CreatedAtRoute(user object)</returns>
+            <remarks>
+            Sample request:
+                POST /api/users
+                {
+                    "firstname": "John",
+                    "lastname": "Smith",
+                    "email": "email@domain.com",
+                    "passwordhash": "password",
+                    "description": "user is blah blah",
+                    "role": "admin"
+                }
+            </remarks>
+            <response code="400">If the user request is null.</response>
+            <response code="409">If a user already exists with the same name.</response>
+            <response code="201">Returns the newly created user.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.UpdateUser(robot_controller_api.Models.User)">
+            <summary>
+            Modify an existing user in the database.
+            </summary>
+            <param name="updatedUser">user object with updated properties.</param>
+            <returns>No content</returns>
+            <remarks>
+            Sample request:
+                PUT /api/users
+                {
+                    "id": 6,
+                    "firstname": "John",
+                    "lastname": "Smith",
+                    "description": "user is blah blah",
+                    "role": "admin"
+                }    
+            </remarks>
+            <response code="400">If the user request is null.</response>
+            <response code="404">If a user with the given id isn't found.</response>
+            <response code="204">If successful, return no content.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Delete a user from the database.
+            </summary>
+            <param name="id">Id of user to delete.</param>
+            <returns>no content or not found</returns>
+            <response code="404">If a user with given id isn't found.</response>
+            <response code="204">If deletion is successful.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="M:robot_controller_api.Controllers.UsersController.UpdateEmailAndPassword(System.Int32,robot_controller_api.Models.Login)">
+            <summary>
+            Updates email and password.
+            </summary>
+            <param name="id">Id of user to update.</param>
+            <returns>Login object</returns>
+            <response code="404">If id of user not found or hash password failed.</response>
+            <response code="201">Returns the newly created Login.</response>
+            <response code="403">User does not have access.</response>
+        </member>
+        <member name="T:robot_controller_api.Persistence.ExtensionMethods">
+            <summary>
+            Extension methods related to data accesss layer.
+            </summary>
+        </member>
+        <member name="M:robot_controller_api.Persistence.ExtensionMethods.MapTo``1(Npgsql.NpgsqlDataReader,``0)">
+            <summary>
+            An automatic Object-Relational Mapping (ORM) method.
+            </summary>
+            <typeparam name="T">Generic type</typeparam>
+            <param name="dr">SQL data reader</param>
+            <param name="entity">entity will be object of class eg, RobotCommand/Map etc</param>
+            <exception cref="T:System.ArgumentNullException">If entity is null</exception>
+        </member>
+        <member name="M:robot_controller_api.Persistence.IRepository.ExecuteReader``1(System.String,Npgsql.NpgsqlParameter[])">
+            <summary>
+            Generic method for all data repositories.
+            </summary>
+            <typeparam name="T">generic type</typeparam>
+            <param name="sqlCommand">sql command to be executed</param>
+            <param name="dbParams">database parameters</param>
+            <returns>A list of entities</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapADO.GetMaps">
+            <summary>
+            Method to get maps from database.
+            </summary>
+            <returns>List of maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapADO.GetSquareMapsOnly">
+            <summary>
+            Gets the maps with isSquareMap = true
+            </summary>
+            <returns>A list of maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapADO.GetMapById(System.Int32)">
+            <summary>
+            Finds map in the database by id
+            </summary>
+            <param name="id">id of the database row</param>
+            <returns>map by id</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapADO.UpdateMap(robot_controller_api.Models.Map)">
+            <summary>
+            Updates a map in the database.
+            </summary>
+            <param name="id">id of database row</param>
+            <param name="updatedMap">map object with updated properties</param>
+            <returns>string with success/error</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapADO.InsertMap(robot_controller_api.Models.Map)">
+            <summary>
+            Inserts a new map into the database.
+            </summary>
+            <param name="robotCommand">map object</param>
+            <returns>String with success/error</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapADO.DeleteMap(System.Int32)">
+            <summary>
+            Delete a map from the database
+            </summary>
+            <param name="id">id of database row</param>
+            <returns>success or not found</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapADO.CheckCoordinates(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Checks to see if given coordinates are on the map.
+            </summary>
+            <param name="id">id of map object</param>
+            <param name="x">columns coordinate</param>
+            <param name="y">rows corrodinate</param>
+            <returns>string success or not on map</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapEF.GetMaps">
+            <summary>
+            Gets all maps
+            </summary>
+            <returns>List of maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapEF.GetSquareMapsOnly">
+            <summary>
+            Get square maps only
+            </summary>
+            <returns>List of square maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapEF.GetMapById(System.Int32)">
+            <summary>
+            Gets a map by id
+            </summary>
+            <param name="id">id of map to return</param>
+            <returns>A map with matching id</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapEF.UpdateMap(robot_controller_api.Models.Map)">
+            <summary>
+            Updates a map
+            </summary>
+            <param name="updatedMap">Map object with updated fields</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapEF.InsertMap(robot_controller_api.Models.Map)">
+            <summary>
+            Inserts a new map
+            </summary>
+            <param name="map">Map to be inserted</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapEF.CheckCoordinates(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Checks to see if given coordinates are on a map
+            </summary>
+            <param name="id">id of map to check</param>
+            <param name="x">x coordinate</param>
+            <param name="y">y coordinate</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapEF.DeleteMap(System.Int32)">
+            <summary>
+            Deletes a map
+            </summary>
+            <param name="id">id of map to delete</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapRepository.GetMaps">
+            <summary>
+            Gets all maps
+            </summary>
+            <returns>List of maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapRepository.GetSquareMapsOnly">
+            <summary>
+            Get square maps only
+            </summary>
+            <returns>List of square maps</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapRepository.GetMapById(System.Int32)">
+            <summary>
+            Gets a map by id
+            </summary>
+            <param name="id">id of map to return</param>
+            <returns>A map with matching id</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapRepository.UpdateMap(robot_controller_api.Models.Map)">
+            <summary>
+            Updates a map
+            </summary>
+            <param name="updatedMap">Map object with updated fields</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapRepository.InsertMap(robot_controller_api.Models.Map)">
+            <summary>
+            Inserts a new map
+            </summary>
+            <param name="map">Map to be inserted</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapRepository.CheckCoordinates(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Checks to see if given coordinates are on a map
+            </summary>
+            <param name="id">id of map to check</param>
+            <param name="x">x coordinate</param>
+            <param name="y">y coordinate</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.MapRepository.DeleteMap(System.Int32)">
+            <summary>
+            Deletes a map
+            </summary>
+            <param name="id">id of map to delete</param>
+            <returns>Map object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandADO.GetRobotCommands">
+            <summary>
+            Method to get robot commands from database.
+            </summary>
+            <returns>List of robot commands</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandADO.GetMoveCommandsOnly">
+            <summary>
+            Gets the robot commands with isMoveCommand = true
+            </summary>
+            <returns>A list of move commands</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandADO.GetRobotCommandById(System.Int32)">
+            <summary>
+            Finds robot command in the database by id
+            </summary>
+            <param name="id">id of the database row</param>
+            <returns>Robot command by id</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandADO.UpdateRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Updates a robot command in the database.
+            </summary>
+            <param name="id">id of database row</param>
+            <param name="updatedCommand">robot command object with updated properties</param>
+            <returns>Boolean successful/unsuccessful</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandADO.InsertRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Inserts a new robot command into the database.
+            </summary>
+            <param name="robotCommand">Robot command object</param>
+            <returns>Boolean successful/unsuccessful</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandADO.DeleteRobotCommand(System.Int32)">
+            <summary>
+            Delete a robotcommand from the database
+            </summary>
+            <param name="id">id of database row</param>
+            <returns>success or null if </returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandEF.GetRobotCommands">
+            <summary>
+            Gets all robot commands
+            </summary>
+            <returns>List of robot commands</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandEF.GetMoveCommandsOnly">
+            <summary>
+            Gets move robot commands only.
+            </summary>
+            <returns>List of move commands</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandEF.GetRobotCommandById(System.Int32)">
+            <summary>
+            Get a robot command by given id
+            </summary>
+            <param name="id">id of robot command</param>
+            <returns>A robot command object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandEF.UpdateRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Updates a robot command
+            </summary>
+            <param name="updatedCommand">RobotCommand object with updated fields</param>
+            <returns>RobotCommand result</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandEF.InsertRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Inserts a new robot commands
+            </summary>
+            <param name="robotCommand">New RobotCommand object</param>
+            <returns>Robot command result</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandEF.DeleteRobotCommand(System.Int32)">
+            <summary>
+            Deletes a robot command
+            </summary>
+            <param name="id">Id of command to be deleted</param>
+            <returns>The deleted robot command</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandRepository.GetRobotCommands">
+            <summary>
+            Gets all robot commands
+            </summary>
+            <returns>List of robot commands</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandRepository.GetMoveCommandsOnly">
+            <summary>
+            Gets move robot commands only.
+            </summary>
+            <returns>List of move commands</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandRepository.GetRobotCommandById(System.Int32)">
+            <summary>
+            Get a robot command by given id
+            </summary>
+            <param name="id">id of robot command</param>
+            <returns>A robot command object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandRepository.UpdateRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Updates a robot command
+            </summary>
+            <param name="updatedCommand">RobotCommand object with updated fields</param>
+            <returns>RobotCommand result</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandRepository.InsertRobotCommand(robot_controller_api.Models.RobotCommand)">
+            <summary>
+            Inserts a new robot commands
+            </summary>
+            <param name="robotCommand">New RobotCommand object</param>
+            <returns>Robot command result</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.RobotCommandRepository.DeleteRobotCommand(System.Int32)">
+            <summary>
+            Deletes a robot command
+            </summary>
+            <param name="id">Id of command to be deleted</param>
+            <returns>The deleted robot command</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.UserEF.GetUsers">
+            <summary>
+            Gets all users
+            </summary>
+            <returns>List of users</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.UserEF.GetAdminUsersOnly">
+            <summary>
+            Gets admin users only.
+            </summary>
+            <returns>List of admin users</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.UserEF.GetUserById(System.Int32)">
+            <summary>
+            Get a user by given id
+            </summary>
+            <param name="id">id of user</param>
+            <returns>A user object</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.UserEF.InsertUser(robot_controller_api.Models.User)">
+            <summary>
+            Inserts a new user
+            </summary>
+            <param name="user">New User object</param>
+            <returns>User result</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.UserEF.UpdateUser(robot_controller_api.Models.User)">
+            <summary>
+            Updates a user.
+            </summary>
+            <param name="updatedUser">User object with updated fields</param>
+            <returns>User result</returns>
+        </member>
+        <member name="M:robot_controller_api.Persistence.UserEF.DeleteUser(System.Int32)">
+            <summary>
+            Deletes a user
+            </summary>
+            <param name="id">Id of user to be deleted</param>
+            <returns>The deleted user</returns>
+        </member>
+    </members>
+</doc>
